@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+backend/venv/
+backend/.venv/
+*.db
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Vector store / generated data
+chroma_db/
+backend/chroma_db/
+backend/storage/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db
