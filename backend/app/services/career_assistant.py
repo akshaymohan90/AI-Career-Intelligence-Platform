@@ -4,16 +4,17 @@ from app.core.config import GROQ_API_KEY, GROQ_MODEL
 from groq import Groq
 
 
-client = Groq(
-    api_key=GROQ_API_KEY
-)
-
-
 def generate_career_assistant_response(
     question: str,
     resume_skills: list[str],
     job_skills: list[str]
 ) -> str:
+
+    if not GROQ_API_KEY:
+        return (
+            "The AI career assistant isn't configured yet — set GROQ_API_KEY "
+            "to enable this feature."
+        )
 
     analysis = analyze_career_fit(
         resume_skills,
@@ -58,6 +59,7 @@ Use the career knowledge as supporting context.
 Do not invent candidate experience.
 """
 
+    client = Groq(api_key=GROQ_API_KEY)
     response = client.chat.completions.create(
         model=GROQ_MODEL,
         messages=[
