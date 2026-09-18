@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import RequireAuth from "@/components/RequireAuth";
 import CareerAnalysisResult from "@/components/CareerAnalysis";
+import Markdown from "@/components/Markdown";
 import { Alert, Badge, Button, Card, Spinner, Textarea } from "@/components/ui";
 import * as api from "@/lib/api";
 import type { CareerAnalysis, Job, Resume } from "@/lib/api";
@@ -181,9 +182,9 @@ function JobDetailContent() {
       {advice && (
         <Card>
           <h2 className="text-base font-semibold text-slate-900">AI advice</h2>
-          <p className="mt-2 whitespace-pre-line text-sm text-slate-600">
-            {advice}
-          </p>
+          <div className="mt-2">
+            <Markdown>{advice}</Markdown>
+          </div>
         </Card>
       )}
 
@@ -205,8 +206,8 @@ function JobDetailContent() {
           </form>
           {askError && <Alert className="mt-4" tone="warning">{askError}</Alert>}
           {answer && (
-            <div className="mt-4 rounded-lg bg-slate-50 p-4 text-sm text-slate-700">
-              {answer}
+            <div className="mt-4 rounded-lg bg-slate-50 p-4">
+              <Markdown>{answer}</Markdown>
             </div>
           )}
         </Card>
