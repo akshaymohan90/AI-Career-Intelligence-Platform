@@ -29,8 +29,6 @@ def generate_career_assistant_response(
     context_text = "\n\n".join(context)
 
     prompt = f"""
-You are an AI Career Assistant.
-
 Candidate skills:
 {", ".join(resume_skills)}
 
@@ -52,11 +50,20 @@ Relevant career knowledge:
 User question:
 {question}
 
-Give practical, personalized career advice.
+If the user question above is genuinely about this candidate's resume,
+this specific job, their skill gap, or their career/professional
+development, give practical, personalized career advice — use the
+candidate's actual skills and skill gaps, and use the career knowledge
+as supporting context. Do not invent candidate experience.
 
-Use the candidate's actual skills and skill gaps.
-Use the career knowledge as supporting context.
-Do not invent candidate experience.
+If the user question is NOT about their resume, this job, or their
+career/professional development (for example: general knowledge,
+unrelated how-to questions, personal advice, or anything outside career
+and job-fit topics), do not answer it — even loosely or creatively tying
+it back to careers. Instead, reply with exactly:
+"I can only help with questions about your resume, this job, and your
+career development — try asking something like 'what skill should I
+prioritize?' or 'how does my experience compare to this role?'"
 """
 
     client = Groq(api_key=GROQ_API_KEY)
@@ -65,7 +72,14 @@ Do not invent candidate experience.
         messages=[
             {
                 "role": "system",
-                "content": "You are a professional AI career advisor."
+                "content": (
+                    "You are a career assistant scoped strictly to this "
+                    "candidate's resume, this job posting, their skill gap, "
+                    "and general career/professional development. You must "
+                    "refuse — not creatively reinterpret — any question "
+                    "outside that scope, using the exact refusal message "
+                    "the user prompt specifies."
+                )
             },
             {
                 "role": "user",
