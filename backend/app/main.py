@@ -6,6 +6,7 @@ from app.core.config import ALLOWED_ORIGINS
 from app.database.base import base
 from app.database.database import engine
 from app.models.user import User
+from app.services.career_knowledge import load_career_knowledge
 
 
 def create_db_tables() -> None:
@@ -27,6 +28,7 @@ app.add_middleware(
 )
 
 create_db_tables()
+load_career_knowledge()
 app.include_router(api_router)
 
 
