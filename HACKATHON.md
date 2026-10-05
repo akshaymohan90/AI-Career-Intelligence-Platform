@@ -26,6 +26,28 @@ A user uploads a resume and picks a target role and city. Ground Truth then:
 
 The UI streams the agent trace (each SerpApi call and its timing) so the process is visible.
 
+### ATS CV builder
+
+The second half of the loop: once you know what the market wants, apply with a CV that
+says it. On the **CV builder** page you pick your uploaded CV, then either paste a job
+description or search live postings (Google Jobs via SerpApi) and click **Use this** to
+pull the full description in. Ground Truth then:
+
+1. Rewrites the CV for that job (Groq LLM): reorders, rephrases bullets, and mirrors the
+   job's exact keywords **only where your real experience supports them**.
+2. Verifies the output against your original CV in code, not just in the prompt:
+   - skills not evidenced in the original are removed (honest umbrella terms like
+     "Machine Learning" are allowed when you have PyTorch or Scikit-learn);
+   - employer or institution names absent from the original are blanked;
+   - any new technology slipped into a bullet is flagged for you to edit out.
+3. Scores ATS keyword coverage before and after, and lists the gaps the job wants that you
+   genuinely lack, pointing you back to the market scan to decide which to learn.
+4. Exports a single-column, text-based PDF and an editable DOCX (opens in Google Docs or
+   Word). No tables, columns, or images, so ATS parsers read it cleanly.
+
+It will not invent experience to raise the score. A CV that claims skills you lack may pass
+the ATS filter and then fail the interview.
+
 ## Who it helps
 
 Early-career engineers in India choosing what to learn next with limited time. The output
@@ -37,6 +59,8 @@ is concrete: a ranked list, the time each skill takes, and the actual postings i
   scan. Every ranking claim is traceable to these postings.
 - **Google Trends** (`engine=google_trends`): one batched request per five skills, 12-month
   interest in India. Produces the rising, stable, or falling label and the score multiplier.
+- **Google Jobs, again** in the CV builder: live posting search that pulls a full job
+  description to tailor against, so the user never has to copy-paste from a job board.
 
 SerpApi is load-bearing. Without it the product has no market data and no ranking. The
 client caches results for 24 hours, so repeat scans cost no credits. A cold scan makes four
@@ -80,6 +104,9 @@ in the root `.env`.
    about two weeks, and the market is shown falling, so it ranks lower than it otherwise would."
 6. Click one **View posting** link to show the evidence is real.
 7. Run the same scan again to show the cache hit and zero extra credits.
+8. Open **CV builder**. Search a live posting, click **Use this**, then **Generate**.
+9. Show the ATS score before and after, and any removed or flagged claims (this is the
+   anti-fabrication guard working). Download the PDF and the DOCX.
 
 ## Honest scope and limits
 
@@ -96,8 +123,11 @@ in the root `.env`.
 - **Existed before the hackathon:** the resume upload and parsing, JWT authentication,
   job matching, and the RAG career assistant. **New for the hackathon:** the market
   intelligence engine (`market_intelligence.py`, `serpapi_client.py`, `skill_taxonomy.py`),
-  the `/api/v1/market/scan` endpoint, and the market scan page.
+  the `/api/v1/market/scan` endpoint, the market scan page, and the ATS CV builder
+  (`cv_tailor.py`, `cv_render.py`, the `/api/v1/cv/*` endpoints, and the CV builder page).
 - **AI tools used in development:** Claude (Anthropic), used as a coding assistant for
   design, implementation, debugging, and documentation.
-- **AI at runtime:** the career assistant and AI advice call a Groq-hosted LLM
-  (`openai/gpt-oss-20b`). The market scan itself uses no LLM.
+- **AI at runtime:** the career assistant, AI advice, and CV builder call a Groq-hosted
+  LLM (`openai/gpt-oss-20b`). The market scan itself uses no LLM. On Groq's free tier the
+  CV builder handles about three generations per minute; past that it returns a clear
+  "try again in a minute" message.

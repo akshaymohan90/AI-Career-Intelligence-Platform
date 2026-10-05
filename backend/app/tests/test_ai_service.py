@@ -1,7 +1,8 @@
 from app.services import ai_service
 
 
-def test_generate_career_advice_returns_string():
+def test_generate_career_advice_returns_string(monkeypatch):
+    monkeypatch.setattr(ai_service, "GROQ_API_KEY", None, raising=False)
     advice = ai_service.generate_career_advice(["python", "fastapi"], ["python", "sql", "api"])
 
     assert isinstance(advice, str)

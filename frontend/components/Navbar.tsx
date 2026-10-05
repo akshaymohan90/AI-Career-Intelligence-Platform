@@ -10,6 +10,7 @@ const links = [
   { href: "/resumes", label: "Resumes" },
   { href: "/jobs", label: "Jobs" },
   { href: "/market", label: "Market scan" },
+  { href: "/cv-builder", label: "CV builder" },
 ];
 
 export default function Navbar() {

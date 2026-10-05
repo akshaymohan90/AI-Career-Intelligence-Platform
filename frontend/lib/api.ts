@@ -14,10 +14,7 @@ function getToken(): string | null {
   return localStorage.getItem("access_token");
 }
 
-async function request<T>(
-  path: string,
-  options: RequestInit = {}
-): Promise<T> {
+async function send(path: string, options: RequestInit = {}): Promise<Response> {
   const token = getToken();
   const headers = new Headers(options.headers);
 
@@ -37,17 +34,25 @@ async function request<T>(
     let detail = response.statusText;
     try {
       const body = await response.json();
-      detail = body.detail || detail;
+      if (typeof body.detail === "string") {
+        detail = body.detail;
+      } else if (Array.isArray(body.detail)) {
+        detail = body.detail.map((d: { msg?: string }) => d.msg).filter(Boolean).join("; ");
+      }
     } catch {
       // no JSON body
     }
     throw new ApiError(detail, response.status);
   }
 
+  return response;
+}
+
+async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const response = await send(path, options);
   if (response.status === 204) {
     return undefined as T;
   }
-
   return response.json() as Promise<T>;
 }
 
@@ -243,6 +248,90 @@ export function runMarketScan(data: {
     method: "POST",
     body: JSON.stringify(data),
   });
+}
+
+// ---- CV builder ----
+
+export type CVExperience = {
+  role: string | null;
+  company: string | null;
+  location: string | null;
+  start: string | null;
+  end: string | null;
+  bullets: string[];
+};
+
+export type TailoredCV = {
+  full_name: string;
+  headline: string;
+  email: string | null;
+  phone: string | null;
+  location: string | null;
+  links: string[];
+  summary: string;
+  skills: string[];
+  experience: CVExperience[];
+  projects: { name: string; bullets: string[] }[];
+  education: { degree: string | null; institution: string | null; year: string | null; details: string | null }[];
+  certifications: string[];
+};
+
+export type ATSReport = {
+  keywords: string[];
+  matched_before: string[];
+  matched_after: string[];
+  missing: string[];
+  coverage_before: number;
+  coverage_after: number;
+};
+
+export type CVTailorResult = {
+  cv: TailoredCV;
+  ats: ATSReport;
+  removed_skills: string[];
+  warnings: string[];
+};
+
+export type JobPosting = {
+  title: string;
+  company: string;
+  location: string | null;
+  description: string;
+  link: string | null;
+};
+
+export function tailorCV(data: {
+  resume_id: number;
+  job_title: string;
+  company: string;
+  job_description: string;
+}) {
+  return request<CVTailorResult>("/api/v1/cv/tailor", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function searchJobPostings(q: string, location: string) {
+  const params = new URLSearchParams({ q, location });
+  return request<JobPosting[]>(`/api/v1/cv/job-search?${params.toString()}`);
+}
+
+export async function downloadCV(cv: TailoredCV, format: "pdf" | "docx") {
+  const response = await send(`/api/v1/cv/render/${format}`, {
+    method: "POST",
+    body: JSON.stringify(cv),
+  });
+  const blob = await response.blob();
+  const stem = (cv.full_name || "CV").replace(/[^A-Za-z0-9]+/g, "_").replace(/^_|_$/g, "") || "CV";
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${stem}_CV.${format}`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 // ---- Resumes ----
