@@ -193,6 +193,58 @@ export function askAssistant(
   );
 }
 
+// ---- Market intelligence ----
+
+export type MarketEvidence = {
+  title: string;
+  company: string;
+  location: string | null;
+  link: string | null;
+  gaps_in_posting: number;
+};
+
+export type MarketRecommendation = {
+  skill: string;
+  jobs_unlocked: number;
+  estimated_weeks: number;
+  jobs_per_week: number;
+  trend_direction: "rising" | "stable" | "falling" | "unknown";
+  trend_momentum: number | null;
+  score: number;
+  evidence: MarketEvidence[];
+};
+
+export type MarketAgentStep = {
+  step: string;
+  detail: string;
+  ms: number;
+};
+
+export type MarketScan = {
+  role: string;
+  location: string;
+  postings_scanned: number;
+  postings_analyzed: number;
+  your_skills: string[];
+  already_qualified: number;
+  near_matches: number;
+  recommendations: MarketRecommendation[];
+  agent_trace: MarketAgentStep[];
+  serpapi_live_calls: number;
+  serpapi_cache_hits: number;
+};
+
+export function runMarketScan(data: {
+  role: string;
+  location: string;
+  resume_id: number;
+}) {
+  return request<MarketScan>("/api/v1/market/scan", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
 // ---- Resumes ----
 
 export function getResumes() {

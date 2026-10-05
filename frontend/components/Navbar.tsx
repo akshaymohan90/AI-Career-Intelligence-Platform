@@ -9,6 +9,7 @@ const links = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/resumes", label: "Resumes" },
   { href: "/jobs", label: "Jobs" },
+  { href: "/market", label: "Market scan" },
 ];
 
 export default function Navbar() {

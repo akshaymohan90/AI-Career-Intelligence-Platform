@@ -141,3 +141,13 @@ threat model, and test plan.
 - Database migrations aren't wired up (`alembic/` scaffolding exists
   but isn't in the dependency chain — schema is created via
   `create_all` on startup).
+
+## Live market intelligence (SerpApi)
+
+The market scan page ranks the skills a candidate is missing by how many live job
+postings each one unlocks per week of learning. It uses SerpApi's Google Jobs engine for
+live postings and Google Trends for 12-month momentum. Every ranking links back to the
+postings that produced it.
+
+Set `SERPAPI_KEY` in `backend/.env` and open `/market`. Full setup, the demo script, and
+the scoring method are in [HACKATHON.md](HACKATHON.md).
