@@ -4,9 +4,9 @@ import { AuthProvider } from "@/lib/auth-context";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "AI Career Intelligence",
+  title: "SkillRadar",
   description:
-    "Upload your resume, match it against job postings, and get AI-powered skill-gap analysis and career advice.",
+    "Learn the skill that unlocks the most jobs. SkillRadar ranks the skills you're missing using live job-market data, then builds an ATS-ready CV.",
 };
 
 export default function RootLayout({

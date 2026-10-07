@@ -1,4 +1,4 @@
-# AI Career Intelligence Platform
+# SkillRadar
 
 A full-stack app that matches a resume against a job posting and tells
 you exactly what's missing. Upload a resume, pick a job, and get a

@@ -3,24 +3,24 @@ import { Button, Card } from "@/components/ui";
 
 const features = [
   {
-    title: "Resume parsing",
+    title: "Live market scan",
     description:
-      "Upload a resume and the backend extracts text and skills automatically.",
+      "Reads live Google Jobs postings through SerpApi and ranks the skills you're missing by how many real jobs each one unlocks per week of learning.",
   },
   {
-    title: "Job matching",
+    title: "Skill momentum",
     description:
-      "Compare a resume against any job posting to get a match score and skill overlap.",
+      "12-month Google Trends data shows which skills are rising or falling in India, so you don't spend months on one that's fading.",
   },
   {
-    title: "Skill-gap analysis",
+    title: "ATS CV builder",
     description:
-      "See exactly which required skills are missing and get prioritized recommendations.",
+      "Tailors your CV to any job using its exact keywords, without inventing experience. Download a PDF or an editable DOCX.",
   },
   {
-    title: "AI career assistant",
+    title: "Evidence, not guesses",
     description:
-      "Ask follow-up questions about a job/resume pairing and get an AI-generated answer.",
+      "Every recommendation links to the live postings behind it, so you can check the numbers yourself.",
   },
 ];
 
@@ -29,15 +29,15 @@ export default function Home() {
     <div className="space-y-16">
       <section className="flex flex-col items-start gap-6 py-12">
         <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
-          AI Career Intelligence Platform
+          SkillRadar
         </span>
         <h1 className="max-w-2xl text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-          Know exactly where your resume stands against any job.
+          Learn the skill that unlocks the most jobs.
         </h1>
         <p className="max-w-xl text-lg text-slate-600">
-          Upload your resume, pick a job posting, and get a match score,
-          missing-skill breakdown, and AI-generated advice on how to close
-          the gap.
+          SkillRadar scans the live job market, tells you which skill to learn
+          next and what it&apos;s worth in real job postings, then builds an
+          ATS-ready CV that proves what you can do.
         </p>
         <div className="flex gap-3">
           <Link href="/register">

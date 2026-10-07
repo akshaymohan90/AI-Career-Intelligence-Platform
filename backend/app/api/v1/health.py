@@ -4,6 +4,6 @@ router = APIRouter()
 def health_check():
     return {
         "status": "healthy",
-        "message": "ai career intelligence platform",
+        "message": "skillradar",
         "version": "1.0.0"
     }

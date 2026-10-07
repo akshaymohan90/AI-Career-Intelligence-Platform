@@ -1,4 +1,4 @@
-# Ground Truth: career advice with receipts
+# SkillRadar: learn the skill that unlocks the most jobs
 
 SerpApi India Hackathon 2026 submission. Track: **Knowledge & Public Interest**.
 
@@ -7,11 +7,11 @@ API docs: https://backend-production-ba306.up.railway.app/docs
 
 ## What it does
 
-Most AI career tools answer "which jobs match my resume?". Ground Truth answers the
+Most AI career tools answer "which jobs match my resume?". SkillRadar answers the
 question job seekers actually need answered: **which skill should I learn next, and what
 is it worth in real jobs?**
 
-A user uploads a resume and picks a target role and city. Ground Truth then:
+A user uploads a resume and picks a target role and city. SkillRadar then:
 
 1. Pulls live Google Jobs postings for that role and city through SerpApi.
 2. Extracts the skills each posting requires, using a 55-skill taxonomy with aliases.
@@ -31,7 +31,7 @@ The UI streams the agent trace (each SerpApi call and its timing) so the process
 The second half of the loop: once you know what the market wants, apply with a CV that
 says it. On the **CV builder** page you pick your uploaded CV, then either paste a job
 description or search live postings (Google Jobs via SerpApi) and click **Use this** to
-pull the full description in. Ground Truth then:
+pull the full description in. SkillRadar then:
 
 1. Rewrites the CV for that job (Groq LLM): reorders, rephrases bullets, and mirrors the
    job's exact keywords **only where your real experience supports them**.

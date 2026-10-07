@@ -14,9 +14,9 @@ def create_db_tables() -> None:
 
 
 app = FastAPI(
-    title="AI Career Intelligence Platform",
+    title="SkillRadar",
     version="1.0.0",
-    description="Backend for AI career intelligence and guidance."
+    description="Ranks skills by jobs unlocked per week of learning using live SerpApi data, and builds ATS-ready CVs."
 )
 
 app.add_middleware(
@@ -35,5 +35,5 @@ app.include_router(api_router)
 @app.get("/")
 def root():
     return {
-        "message": "AI Career Intelligence Platform API is running!"
+        "message": "SkillRadar API is running!"
     }

@@ -10,7 +10,7 @@ for env_file in (base_dir / ".env", root_dir / ".env"):
     if env_file.exists():
         load_dotenv(env_file)
 
-APP_NAME = os.getenv("APP_NAME", "AI Career Intelligence Platform")
+APP_NAME = os.getenv("APP_NAME", "SkillRadar")
 APP_VERSION = os.getenv("APP_VERSION", "1.0.0")
 DEBUG = os.getenv("DEBUG", "True").lower() in {"1", "true", "yes", "on"}
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
